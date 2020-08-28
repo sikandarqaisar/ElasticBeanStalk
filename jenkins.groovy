@@ -87,22 +87,33 @@ pipeline {
 
 
 
-
-
 pipeline {
     agent any
     stages {
-        stage('1st') {
-            steps {
-                git 'https://github.com/sikandarqaisar/ElasticBeanStalk.git'
+        stage('Checkout') {
+            steps{
+                checkout([  
+                            $class: 'GitSCM', 
+                            branches: [[name: '']], 
+                            doGenerateSubmoduleConfigurations: false, 
+                            extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'CalibrationResults']], 
+                            submoduleCfg: [], 
+                            userRemoteConfigs: [[url: 'https://github.com/sikandarqaisar/ElasticBeanStalk.git']]
+                        ])
                 sh 'git rev-parse --abbrev-ref HEAD'
-                // sh 'git branch -r | awk \'{print $1}\' ORS=\'\\n\' >branches.txt'
-                // cat branches.txt
+                checkout([  
+                            $class: 'GitSCM', 
+                            branches: [[name: 'refs/heads/master']], 
+                            doGenerateSubmoduleConfigurations: false, 
+                            extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'Combination']], 
+                            submoduleCfg: [], 
+                            userRemoteConfigs: [[url: 'https://github.com/sikandarqaisar/ElasticBeanStalk.git']]
+                        ])                
+                sh 'git rev-parse --abbrev-ref HEAD'
             }
         }
         stage('2nd') {
             steps {
-                git 'https://github.com/sikandarqaisar/ElasticBeanStalk.git'
                 sh "ls"
             }
         }
