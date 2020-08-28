@@ -88,3 +88,21 @@ pipeline {
 
 
 
+pipeline {
+    agent any
+    stages {
+        stage('1st') {
+            steps {
+                git 'https://github.com/sikandarqaisar/ElasticBeanStalk.git'
+                sh 'git branch -r | awk \'{print $1}\' ORS=\'\\n\' >branches.txt'
+                cat branches.txt
+            }
+        }
+        stage('2nd') {
+            steps {
+                git 'https://github.com/sikandarqaisar/ElasticBeanStalk.git'
+                sh "ls"
+            }
+        }
+    }
+}
