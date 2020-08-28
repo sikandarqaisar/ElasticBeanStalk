@@ -65,21 +65,21 @@ stages{
 
 
 
-
-
 pipeline {
     agent any
     stages {
         stage('1st') {
             steps {
-                git url:'https://github.com/sikandarqaisar/ElasticBeanStalk.git',branch: 'any' 
+                git url:'https://github.com/sikandarqaisar/ElasticBeanStalk.git'
                 sh 'git rev-parse --abbrev-ref HEAD'
             }
         }
         stage('2nd') {
             steps {
-                git url: 'https://github.com/sikandarqaisar/ElasticBeanStalk.git',branch: 'any' 
-                sh 'git rev-parse --abbrev-ref HEAD'
+                checkout([$class: 'GitSCM',
+                    branches: [[name: 'any']],
+                    userRemoteConfigs: [[url: 'https://github.com/sikandarqaisar/ElasticBeanStalk.git']]
+                ])
             }
         }
     }
