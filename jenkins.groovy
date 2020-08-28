@@ -66,18 +66,21 @@ stages{
 
 
 
-
 pipeline {
     agent any
     stages {
         stage('1st') {
             steps {
+                git branch: 'any' 
                 git 'https://github.com/sikandarqaisar/ElasticBeanStalk.git'
-                sh "ls"
+                sh 'git rev-parse --abbrev-ref HEAD'
+                // sh 'git branch -r | awk \'{print $1}\' ORS=\'\\n\' >branches.txt'
+                // cat branches.txt
             }
         }
         stage('2nd') {
             steps {
+                git branch: 'any' 
                 git 'https://github.com/sikandarqaisar/ElasticBeanStalk.git'
                 sh "ls"
             }
