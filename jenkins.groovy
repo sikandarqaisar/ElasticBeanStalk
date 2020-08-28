@@ -74,14 +74,14 @@ pipeline {
                 sh 'git rev-parse --abbrev-ref HEAD'
             }
         }
-        stage('2nd') {
-            steps {
-                checkout([$class: 'GitSCM',
-                    branches: [[name: 'any']],
-                    userRemoteConfigs: [[url: 'https://github.com/sikandarqaisar/ElasticBeanStalk.git']]
-                ])
-            }
-        }
+    //     stage('2nd') {
+    //         steps {
+    //             checkout([$class: 'GitSCM',
+    //                 branches: [[name: 'any']],
+    //                 userRemoteConfigs: [[url: 'https://github.com/sikandarqaisar/ElasticBeanStalk.git']]
+    //             ])
+    //         }
+    //     }
     }
 }
 
