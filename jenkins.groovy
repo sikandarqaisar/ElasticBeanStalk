@@ -72,7 +72,7 @@ pipeline {
     stages {
         stage('1st') {
             steps {
-                git 'https://github.com/sikandarqaisar/ElasticBeanStalk.git',branch: 'any' 
+                git url:'https://github.com/sikandarqaisar/ElasticBeanStalk.git',branch: 'any' 
                 sh 'git rev-parse --abbrev-ref HEAD'
             }
         }
