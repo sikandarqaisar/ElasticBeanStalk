@@ -109,7 +109,7 @@ pipeline {
                             submoduleCfg: [], 
                             userRemoteConfigs: [[url: 'https://github.com/sikandarqaisar/ElasticBeanStalk.git']]
                         ])                
-                sh 'scm.branches[0].name'
+                sh 'GitSCM.branches[0].name'
             }
         }
         stage('2nd') {
