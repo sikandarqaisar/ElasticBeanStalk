@@ -20,7 +20,7 @@ pipeline {
                         def ElasticBeanStalk = sh(script: "git name-rev --name-only HEAD | cut -b 16- | tr -d '[:space:]'", returnStdout: true)
                         println("branch_name = ${ElasticBeanStalk}")                        
                         echo "Triggering ElasticBeanStalk job"
-                        build job: "1stRepo", wait: false, parameters: [[$class: 'StringParameterValue', name: 'branch_name', value: ElasticBeanStalk]]
+                        build job: "ElasticBeanStalkJob", wait: false, parameters: [[$class: 'StringParameterValue', name: 'branch_name', value: ElasticBeanStalk]]
                     }
                 }
             }
@@ -30,7 +30,7 @@ pipeline {
                 script {
                     echo "Triggering Helm-Chart job"
                     println(HelmChart)
-                    build job: "2ndRepo", wait: false, parameters: [[$class: 'StringParameterValue', name: 'branch_name', value: HelmChart]]
+                    build job: "helmChartJob", wait: false, parameters: [[$class: 'StringParameterValue', name: 'branch_name', value: HelmChart]]
                 }
             }
         }
