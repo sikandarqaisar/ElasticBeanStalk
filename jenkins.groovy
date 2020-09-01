@@ -1,11 +1,11 @@
 pipeline {
     agent any
     parameters {
-    string(defaultValue: "master", name: 'BranchName1stRepo')
-    string(defaultValue: "master", name: 'BranchName2ndRepo')
-    }    
+    string(defaultValue: "master", name: 'HelmChart')
+    string(defaultValue: "master", name: 'ElasticBeanStalk')
+    }
     stages {
-        stage('Checkout 1st Repo') {
+        stage('Trigger ElasticBeanStalk Repo') {
             steps{
                 checkout([  
                             $class: 'GitSCM', 
@@ -17,35 +17,17 @@ pipeline {
                         ])
                 dir("ElasticBeanStalk_Repo"){
                     script {
-                        def BranchName1stRepo = sh(script: "git name-rev --name-only HEAD | cut -b 16-", returnStdout: true)
-                        println("branch_name = ${BranchName1stRepo}")
+                        echo "Triggering ElasticBeanStalk job"
+                        build job: "1stRepo", wait: false, parameters: [[$class: 'StringParameterValue', name: 'branch_name', value: ElasticBeanStalk]]
                     }
                 }
-                script {
-                        echo "Triggering 1st job"
-                        build job: "1stRepo", wait: false, parameters: [string(name: 'branch_name', value: String.valueOf(BranchName1stRepo))]
-                }                        
             }
         }
-        stage('Checkout 2nd Repo') {
+        stage('Trigger Helm chart Repo') {
             steps {
-                checkout([  
-                            $class: 'GitSCM', 
-                            branches: [[name: '']], 
-                            doGenerateSubmoduleConfigurations: false, 
-                            extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'ElasticBeanStalk_Repo2']], 
-                            submoduleCfg: [], 
-                            userRemoteConfigs: [[url: 'https://github.com/sikandarqaisar/ElasticBeanStalk.git']]
-                        ])
-                dir("ElasticBeanStalk_Repo2"){
-                    script {
-                        def BranchName2ndRepo = sh(script: "git name-rev --name-only HEAD | cut -b 16-", returnStdout: true)
-                        println("branch_name = ${BranchName2ndRepo}")
-                    }
-                }
                 script {
-                        echo "Triggering 2nd job"
-                        build job: "2ndRepo", wait: false, parameters: [string(name: 'branch_name', value: String.valueOf(BranchName2ndRepo))]
+                    echo "Triggering Helm-Chart job"
+                    build job: "2ndRepo", wait: false, parameters: [[$class: 'StringParameterValue', name: 'branch_name', value: HelmChart]]
                 }
             }
         }
