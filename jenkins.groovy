@@ -17,14 +17,12 @@ pipeline {
                         ])
                 dir("ElasticBeanStalk_Repo"){
                     script {
-                        sh 'git name-rev --name-only HEAD'
+                        def BranchName1stRepo = sh(script: "git name-rev --name-only HEAD | cut -b 16-", returnStdout: true)
+                        println("branch_name = ${BranchName1stRepo}")
                     }
                 }
                 script {
                         echo "Triggering 1st job"
-                        FULL_PATH_BRANCH = 'git name-rev --name-only HEAD'
-                        BranchName1stRepo = FULL_PATH_BRANCH.substring(FULL_PATH_BRANCH.lastIndexOf('/') + 1, FULL_PATH_BRANCH.length())
-                        echo BranchName1stRepo
                         build job: "1stRepo", wait: false, parameters: [string(name: 'branch_name', value: String.valueOf(BranchName1stRepo))]
                 }                        
             }
@@ -39,6 +37,12 @@ pipeline {
                             submoduleCfg: [], 
                             userRemoteConfigs: [[url: 'https://github.com/sikandarqaisar/ElasticBeanStalk.git']]
                         ])
+                dir("ElasticBeanStalk_Repo2"){
+                    script {
+                        def BranchName2ndRepo = sh(script: "git name-rev --name-only HEAD | cut -b 16-", returnStdout: true)
+                        println("branch_name = ${BranchName2ndRepo}")
+                    }
+                }
                 script {
                         echo "Triggering 2nd job"
                         build job: "2ndRepo", wait: false, parameters: [string(name: 'branch_name', value: String.valueOf(BranchName2ndRepo))]
