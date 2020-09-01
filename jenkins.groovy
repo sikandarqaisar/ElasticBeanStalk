@@ -11,16 +11,15 @@ pipeline {
                             $class: 'GitSCM', 
                             branches: [[name: '']], 
                             doGenerateSubmoduleConfigurations: false, 
-                            extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'CalibrationResults']], 
+                            extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'ElasticBeanStalk_Repo']], 
                             submoduleCfg: [], 
                             userRemoteConfigs: [[url: 'https://github.com/sikandarqaisar/ElasticBeanStalk.git']]
                         ])
-                dir("CalibrationResults"){
+                dir("ElasticBeanStalk_Repo"){
                     script {
                         sh 'git name-rev --name-only HEAD'
                     }
                 }
-                
                 script {
                         echo "Triggering 1st job"
                         FULL_PATH_BRANCH = 'git name-rev --name-only HEAD'
@@ -36,7 +35,7 @@ pipeline {
                             $class: 'GitSCM', 
                             branches: [[name: '']], 
                             doGenerateSubmoduleConfigurations: false, 
-                            extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'CalibrationResults']], 
+                            extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'ElasticBeanStalk_Repo2']], 
                             submoduleCfg: [], 
                             userRemoteConfigs: [[url: 'https://github.com/sikandarqaisar/ElasticBeanStalk.git']]
                         ])
